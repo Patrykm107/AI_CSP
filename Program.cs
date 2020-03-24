@@ -10,6 +10,9 @@ namespace CSP
     {
         static void Main(string[] args)
         {
+            Console.WriteLine(DataLoader.LoadSudokus()[0].ToString());
+
+            Console.ReadLine();
         }
     }
 }
