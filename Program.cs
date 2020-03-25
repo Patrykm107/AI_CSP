@@ -10,7 +10,20 @@ namespace CSP
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(DataLoader.LoadSudokus()[0].ToString());
+            List<Sudoku> sudokus = DataLoader.LoadSudokus();
+            
+            Console.WriteLine(sudokus[0]);
+
+            DateTime start = DateTime.Now;
+            sudokus[0].Solve();
+            Console.WriteLine($"{(DateTime.Now - start)}");
+
+            /*            foreach(Sudoku sudoku in sudokus)
+                        {
+                            DateTime start = DateTime.Now;
+                            sudoku.Solve();
+                            Console.WriteLine($"{(DateTime.Now - start)}");
+                        }*/
 
             Console.ReadLine();
         }

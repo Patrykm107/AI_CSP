@@ -39,7 +39,7 @@ namespace CSP
             return sudokus;
         }
 
-        public static (char[,], List<string>) loadJolka(int fileNumber)
+        public static Jolka loadJolka(int fileNumber)
         {
             List<string> puzzleLines = File.ReadAllLines($"Resources/Jolka/puzzle{fileNumber}").ToList();
             int rows = puzzleLines.Count;
@@ -56,7 +56,7 @@ namespace CSP
 
             List<string> wordsList = File.ReadAllLines($"Resources/Jolka/words{fileNumber}").ToList();
 
-            return (puzzle, wordsList);
+            return new Jolka(puzzle, wordsList);
         }
     }
 }
