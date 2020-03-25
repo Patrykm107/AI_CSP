@@ -18,12 +18,12 @@ namespace CSP
             sudokus[0].Solve();
             Console.WriteLine($"{(DateTime.Now - start)}");
 
-            /*            foreach(Sudoku sudoku in sudokus)
-                        {
-                            DateTime start = DateTime.Now;
-                            sudoku.Solve();
-                            Console.WriteLine($"{(DateTime.Now - start)}");
-                        }*/
+/*            foreach (Sudoku sudoku in sudokus)
+            {
+                DateTime start = DateTime.Now;
+                sudoku.Solve();
+                Console.WriteLine($"{(DateTime.Now - start)}");
+            }*/
 
             Console.ReadLine();
         }

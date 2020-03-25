@@ -160,9 +160,9 @@ namespace CSP
                         }
                         stringBuilder.Append(" ");
                     }
-                    stringBuilder.Append("\n");
+                    stringBuilder.AppendLine();
                 }
-                stringBuilder.Append("\n");
+                stringBuilder.AppendLine();
             }
 
             return stringBuilder.ToString();
