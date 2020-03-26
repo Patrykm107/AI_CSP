@@ -10,13 +10,15 @@ namespace CSP
     {
         static void Main(string[] args)
         {
-            List<Sudoku> sudokus = DataLoader.LoadSudokus();
-            
-            Console.WriteLine(sudokus[0]);
+            //List<Sudoku> sudokus = DataLoader.LoadSudokus();
 
-            DateTime start = DateTime.Now;
-            sudokus[0].Solve();
-            Console.WriteLine($"{(DateTime.Now - start)}");
+            Jolka jolka = DataLoader.LoadJolka(0);
+
+            //Console.WriteLine(sudokus[40]);
+
+/*            DateTime start = DateTime.Now;
+            sudokus[40].Solve();
+            Console.WriteLine($"{(DateTime.Now - start)}");*/
 
 /*            foreach (Sudoku sudoku in sudokus)
             {

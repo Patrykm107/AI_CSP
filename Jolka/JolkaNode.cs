@@ -25,6 +25,8 @@ namespace CSP
             this.position = position;
             this.constraints = constraints == null ? new List<JolkaConstraint>() : constraints;
             this.keep = new List<int>();
+
+            this.constraints.ForEach(con => con.nodesAffected.Add(this));
         }
 
     }

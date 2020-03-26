@@ -9,7 +9,7 @@ namespace CSP
     class JolkaConstraint
     {
         public int row, column;
-        public char letter;
+        public char letter = '_';
         public List<JolkaNode> nodesAffected;
 
         public JolkaConstraint(int row, int column, List<JolkaNode> nodes = null)
