@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,13 +47,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataLoader.cs" />
-    <Compile Include="Jolka\Jolka.cs" />
-    <Compile Include="Jolka\JolkaConstraint.cs" />
-    <Compile Include="Jolka\JolkaNode.cs" />
+    <Compile Include="Problems\Jolka\Jolka.cs" />
+    <Compile Include="Problems\Jolka\JolkaConstraint.cs" />
+    <Compile Include="Problems\Jolka\JolkaNode.cs" />
+    <Compile Include="Problems\Node.cs" />
+    <Compile Include="Problems\Problem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sudoku\Sudoku.cs" />
-    <Compile Include="Sudoku\SudokuNode.cs" />
+    <Compile Include="Problems\Sudoku\Sudoku.cs" />
+    <Compile Include="Problems\Sudoku\SudokuNode.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace CSP
 {
-    class Jolka
+    class Jolka : Problem<string>
     {
         private const char EMPTY = '_';
-        private const char BLOCKED = '#';
 
         private char[,] puzzle;
         private List<string> words;
-        private List<JolkaNode> nodes;
+
         private List<JolkaConstraint> constraints;
 
         public Jolka(char[,] puzzle, List<string> words)
@@ -22,6 +21,17 @@ namespace CSP
             this.words = words;
             extractConstraints();
             extractNodes();
+        }
+
+        protected override void CheckConstraintsForAllAffected(Node<string> causingNode)
+        {
+            JolkaNode node = (JolkaNode)causingNode;
+            node.constraints.ForEach(
+               con => con.nodesAffected.ForEach(
+                   n => {
+                   if (n.IsEmpty()) n.checkConstraints();
+                   })
+                );
         }
 
         private void extractConstraints()
@@ -56,7 +66,7 @@ namespace CSP
 
         private void extractNodes()
         {
-            nodes = new List<JolkaNode>();
+            nodes = new List<Node<string>>();
             //Horizontal
             for(int i = 0; i < puzzle.GetLength(0); i++)
             {
@@ -71,7 +81,7 @@ namespace CSP
                         {
                             if(j == puzzle.GetLength(1) - 1)
                             {
-                                nodes.Add(new JolkaNode(begin, j, words.Where(word => word.Length == j - begin + 1).ToList(), Position.Horizontal,
+                                nodes.Add(new JolkaNode(begin, j, i,ref puzzle, words.Where(word => word.Length == j - begin + 1).ToList(), Position.Horizontal,
                                     constraints.Where(constraint => constraint.row == i && constraint.column >= begin && constraint.column <= j).ToList()
                                     ));
                             }
@@ -92,7 +102,7 @@ namespace CSP
                         {
                             if(begin != j - 1)
                             {
-                                nodes.Add(new JolkaNode(begin, j - 1, words.Where(word => word.Length == j - begin).ToList(), Position.Horizontal,
+                                nodes.Add(new JolkaNode(begin, j - 1, i, ref puzzle, words.Where(word => word.Length == j - begin).ToList(), Position.Horizontal,
                                     constraints.Where(constraint => constraint.row == i && constraint.column >= begin && constraint.column < j).ToList()
                                     ));
                             }
@@ -120,7 +130,7 @@ namespace CSP
                         {
                             if (j == puzzle.GetLength(0) - 1)
                             {
-                                nodes.Add(new JolkaNode(begin, j, words.Where(word => word.Length == j - begin + 1).ToList(), Position.Vertical,
+                                nodes.Add(new JolkaNode(begin, j, i, ref puzzle, words.Where(word => word.Length == j - begin + 1).ToList(), Position.Vertical,
                                     constraints.Where(constraint => constraint.column == i && constraint.row >= begin && constraint.row <= j).ToList()
                                     ));
                             }
@@ -141,7 +151,7 @@ namespace CSP
                         {
                             if (begin != j - 1)
                             {
-                                nodes.Add(new JolkaNode(begin, j - 1, words.Where(word => word.Length == j - begin).ToList(), Position.Vertical,
+                                nodes.Add(new JolkaNode(begin, j - 1, i, ref puzzle, words.Where(word => word.Length == j - begin).ToList(), Position.Vertical,
                                     constraints.Where(constraint => constraint.column == i && constraint.row >= begin && constraint.row < j).ToList()
                                     ));
                             }

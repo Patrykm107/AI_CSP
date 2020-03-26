@@ -6,76 +6,31 @@ using System.Threading.Tasks;
 
 namespace CSP
 {
-    class Sudoku
+    class Sudoku : Problem<int>
     {
         private SudokuNode[,] sudokuNodes;
 
         public Sudoku(SudokuNode[,] sudokuNodes)
         {
             this.sudokuNodes = sudokuNodes;
+            convertToList();
             checkAllNodes();
         }
 
-        public bool Solve()
+        private void convertToList()
         {
-            SudokuNode nextNode = FindNextNodeByOrder(0, 0);
-
-            if (nextNode != null)
+            nodes = new List<Node<int>>();
+            foreach(SudokuNode node in sudokuNodes)
             {
-                for(int i = 0; i < nextNode.domain.Count; i++)
-                {
-                    nextNode.value = FindNextValueByOrder(nextNode, i);
-                    CheckConstraintsForAllAffected(nextNode);
-                    if(Solve()) return true;
-                }
-                nextNode.value = 0;
-                CheckConstraintsForAllAffected(nextNode);
-
-                return false;
+                nodes.Add(node);
             }
-            else
-            {
-                Console.WriteLine(this.ToString());
-                return false;
-            }
-        }
-
-        private SudokuNode FindNextNodeByOrder(int startX, int startY)
-        {
-            bool finished = false;
-            int x = startX, y = startY;
-
-            while (sudokuNodes[x, y].value != 0 && !finished)
-            {
-                if(y < 8)
-                {
-                    y++;
-                }
-                else
-                {
-                    if (x >= 8)
-                    {
-                        finished = true;
-                    }
-                    else
-                    {
-                        x++;
-                        y = 0;
-                    }
-                }
-
-            }
-            return finished ? null : sudokuNodes[x, y];
-        }
-
-        private int FindNextValueByOrder(SudokuNode node, int NoVisited)
-        {
-            return node.domain[NoVisited];
         }
 
         //Check all constraints for all nodes that might be affected after inserting new value
-        private void CheckConstraintsForAllAffected(SudokuNode causingNode)
+        override protected void CheckConstraintsForAllAffected(Node<int> Node)
         {
+            SudokuNode causingNode = (SudokuNode) Node;
+
             for (int i = 0; i < 9; i++) //row
             {
                 SudokuNode curr = sudokuNodes[causingNode.row, i];
