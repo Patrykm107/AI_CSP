@@ -20,6 +20,7 @@ namespace CSP
         public List<JolkaConstraint> constraints;
 
         private List<int> keep; //Ids for letters to keep during cleaning (not inputted by this Node)
+        private bool changed;
 
         public JolkaNode(int begin, int end, int pos, ref char[,] puzzle, List<string> domain, Position position, List<JolkaConstraint> constraints = null)
         {
@@ -39,6 +40,7 @@ namespace CSP
         public override void Fill(string value)
         {
             if (filled) Clear();
+            changed = false;
             keep = new List<int>();
             for(int i = 0; i < end - begin + 1; i++)
             {
@@ -52,6 +54,10 @@ namespace CSP
                     else
                     {
                         keep.Add(i);
+                        if (puzzle[pos, begin + i] != value[i])
+                        {
+                            changed = true;
+                        }
                     }
                 }
                 else
@@ -65,6 +71,10 @@ namespace CSP
                     else
                     {
                         keep.Add(i);
+                        if(puzzle[begin + i, pos] != value[i])
+                        {
+                            changed = true;
+                        }
                     }
                     
                 }
@@ -123,6 +133,11 @@ namespace CSP
                         domain = domain.Where(word => word[con.row - begin].Equals(con.letter)).ToList();
                     }
                 });
+        }
+
+        public bool changedConstraints()
+        {
+            return changed;
         }
     }
     enum Position

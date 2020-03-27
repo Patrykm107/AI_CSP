@@ -99,6 +99,50 @@ namespace CSP
             node.domain.RemoveAll(x => blockedValues.Distinct().Contains(x));
         }
 
+        //Check if node fullfills its constraints
+        protected override bool constraintsFullfilled(Node<int> node)
+        {
+            SudokuNode sudokuNode = (SudokuNode)node;
+
+            for (int i = 0; i < 9; i++) //row
+            {
+                if (i != sudokuNode.column)
+                {
+                    int currValue = sudokuNodes[sudokuNode.row, i].value;
+                    if (currValue != 0 && currValue == sudokuNode.value) return false;
+                }
+            }
+
+            for (int i = 0; i < 9; i++)  //column
+            {
+                if(i != sudokuNode.row)
+                {
+                    int currValue = sudokuNodes[i, sudokuNode.column].value;
+                    if(currValue != 0 && currValue == sudokuNode.value)
+                    {
+                        return false;
+                    }  
+                }
+
+            }
+
+            int r = sudokuNode.row / 3, c = sudokuNode.column / 3;
+            for (int i = 0; i < 3; i++) //box
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    int row = r * 3 + i, column = c * 3 + j;
+                    if (row != sudokuNode.row && column != sudokuNode.column)
+                    {
+                        int currValue = sudokuNodes[row, column].value;
+                        if (currValue != 0 && currValue == sudokuNode.value) return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
         public override string ToString()
         {
             StringBuilder stringBuilder = new StringBuilder();

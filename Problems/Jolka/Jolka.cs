@@ -166,6 +166,11 @@ namespace CSP
             }
         }
 
+        protected override bool constraintsFullfilled(Node<string> node)
+        {
+            return !((JolkaNode)node).changedConstraints();
+        }
+
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
