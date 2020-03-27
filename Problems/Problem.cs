@@ -9,13 +9,30 @@ namespace CSP
     abstract class Problem<T>
     {
         public List<Node<T>> nodes;
+        private bool firstLoop = true;
+        private bool resultFound = false;
 
-        public bool SolveForward()
+        private UInt32 visitedNodesTotal = 0;
+        private UInt32 noOfReturnsTotal = 0;
+        private UInt32 visitedNodesToFind = 0;
+        private UInt32 noOfReturnsToFind = 0;
+        private UInt32 noOfResults = 0;
+        private DateTime startTime;
+        private TimeSpan timeToFindResult;
+        private TimeSpan totalMethodTime;
+
+        public void SolveForward()
         {
+            if (firstLoop)
+            { 
+                startTime = DateTime.Now;
+                firstLoop = false;
+            }
             Node<T> nextNode = FindNextNodeByOrder();
 
             if (nextNode != null)
             {
+                visitedNodesTotal++;
                 for (int i = 0; i < nextNode.domain.Count; i++)
                 {
                     nextNode.Fill(FindNextValueByOrder(nextNode, i));
@@ -24,43 +41,63 @@ namespace CSP
                     {
                         continue;
                     }
-                    if (SolveForward()) return true;
+                    SolveForward();
                 }
                 nextNode.Clear();
                 adjustDomainsForAllAffected(nextNode);
-
-                return false;
             }
             else
             {
-                Console.WriteLine(this.ToString());
-                return false;
+                if (!resultFound)
+                {
+                    timeToFindResult = DateTime.Now - startTime;
+                    visitedNodesToFind = visitedNodesTotal;
+                    noOfReturnsToFind = noOfReturnsTotal;
+                }
+                noOfResults++;
+                //Console.WriteLine(this.ToString());
             }
+
+            totalMethodTime = DateTime.Now - startTime;
+            noOfReturnsTotal++;
         }
 
-        public bool SolveBacktracking()
+        public void SolveBacktracking()
         {
-            Node<T> nextNode = FindNextNodeByRandom();
+            if (firstLoop)
+            {
+                startTime = DateTime.Now;
+                firstLoop = false;
+            }
+            Node<T> nextNode = FindNextNodeByOrder();
 
             if (nextNode != null)
             {
+                visitedNodesTotal++;
                 for (int i = 0; i < nextNode.domain.Count; i++)
                 {
                     nextNode.Fill(FindNextValueByOrder(nextNode, i));
-                    if (constraintsFullfilled(nextNode) && SolveBacktracking())
+                    if (constraintsFullfilled(nextNode))
                     {
-                        return true;
+                        SolveBacktracking();
                     }
                 }
                 nextNode.Clear();
-
-                return false;
             }
             else
             {
-                Console.WriteLine(this.ToString());
-                return false;
+                if (!resultFound)
+                {
+                    timeToFindResult = DateTime.Now - startTime;
+                    visitedNodesToFind = visitedNodesTotal;
+                    noOfReturnsToFind = noOfReturnsTotal;
+                }
+                noOfResults++;
+                //Console.WriteLine(this.ToString());
             }
+
+            totalMethodTime = DateTime.Now - startTime;
+            noOfReturnsTotal++;
         }
 
         protected Node<T> FindNextNodeByOrder() {
@@ -92,6 +129,19 @@ namespace CSP
         {
             return node.domain[i];
         }
+
+        public void printResearch()
+        {
+            Console.Write(
+                $"Time to find first result: {timeToFindResult}\n" +
+                $"Number of nodes visited to find result: {visitedNodesToFind}\n" +
+                $"Number of returns to find result: {noOfReturnsToFind}\n" +
+                $"Total time: {totalMethodTime}\n" +
+                $"Total nodes visited: {visitedNodesTotal}\n" +
+                $"Total returns: {noOfReturnsTotal}\n" +    //Includes returns from finished problem
+                $"Number of results: {noOfResults}\n\n");
+        }
+
 
         abstract protected bool constraintsFullfilled(Node<T> node);
 

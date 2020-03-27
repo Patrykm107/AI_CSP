@@ -10,21 +10,22 @@ namespace CSP
     {
         static void Main(string[] args)
         {
-            //List<Sudoku> sudokus = DataLoader.LoadSudokus();
 
-            Jolka jolka = DataLoader.LoadJolka(1);
-            jolka.Solve();
+            Jolka jolka = DataLoader.LoadJolka(0);
+            jolka.SolveBacktracking();
+            jolka.printResearch();
 
             //Console.WriteLine(sudokus[40]);
 
-            /*            DateTime start = DateTime.Now;
-                        sudokus[0].Solve();
-                        Console.WriteLine($"{(DateTime.Now - start)}");*/
+            List<Sudoku> sudokus = DataLoader.LoadSudokus();
+            sudokus[0].SolveBacktracking();
+            sudokus[0].printResearch();
 
-            /*            foreach (Sudoku sudoku in sudokus)
+            /*            
+                        foreach (Sudoku sudoku in sudokus)
                         {
                             DateTime start = DateTime.Now;
-                            sudoku.Solve();
+                            sudoku.SolveForward();
                             Console.WriteLine($"{(DateTime.Now - start)}");
                         }*/
 
