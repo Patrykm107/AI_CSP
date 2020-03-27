@@ -13,11 +13,11 @@ namespace CSP
         public Sudoku(SudokuNode[,] sudokuNodes)
         {
             this.sudokuNodes = sudokuNodes;
-            convertToList();
-            checkAllNodes();
+            ConvertToList();
+            adjustAllNodes();
         }
 
-        private void convertToList()
+        private void ConvertToList()
         {
             nodes = new List<Node<int>>();
             foreach(SudokuNode node in sudokuNodes)
@@ -27,20 +27,20 @@ namespace CSP
         }
 
         //Check all constraints for all nodes that might be affected after inserting new value
-        override protected void CheckConstraintsForAllAffected(Node<int> Node)
+        override protected void adjustDomainsForAllAffected(Node<int> Node)
         {
             SudokuNode causingNode = (SudokuNode) Node;
 
             for (int i = 0; i < 9; i++) //row
             {
                 SudokuNode curr = sudokuNodes[causingNode.row, i];
-                if(curr.value == 0) checkConstraints(curr);
+                if(curr.value == 0) adjustDomain(curr);
             }
 
             for(int i = 0; i < 9; i++)  //column
             {
                 SudokuNode curr = sudokuNodes[i, causingNode.column];
-                if (curr.value == 0) checkConstraints(curr);
+                if (curr.value == 0) adjustDomain(curr);
             }
 
             int r = causingNode.row / 3, c = causingNode.column / 3;
@@ -52,26 +52,26 @@ namespace CSP
                     if (row != causingNode.row && column != causingNode.column)
                     {
                         SudokuNode curr = sudokuNodes[row, column];
-                        if (curr.value == 0) checkConstraints(curr);
+                        if (curr.value == 0) adjustDomain(curr);
                     }
                 }
             }
         }
 
-        //Adjust all domains at the begging
-        private void checkAllNodes()
+        //Adjust all domains at the beginning
+        private void adjustAllNodes()
         {
             foreach (SudokuNode node in sudokuNodes)
             {
                 if (node.value == 0)
                 {
-                    checkConstraints(node);
+                    adjustDomain(node);
                 }
             }
         }
 
-        //Check constraints for single node
-        private void checkConstraints(SudokuNode node)
+        //Adjust domain for single node
+        private void adjustDomain(SudokuNode node)
         {
             List<int> blockedValues = new List<int>();
             for(int i = 0; i < 9; i++)  //row

@@ -108,7 +108,7 @@ namespace CSP
             return !filled;
         }
         
-        public void checkConstraints()
+        public void adjustDomain()
         {
             domain = new List<string>(fullDomain);
 

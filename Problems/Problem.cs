@@ -10,7 +10,7 @@ namespace CSP
     {
         public List<Node<T>> nodes;
 
-        public bool Solve()
+        public bool SolveForward()
         {
             Node<T> nextNode = FindNextNodeByOrder();
 
@@ -19,11 +19,15 @@ namespace CSP
                 for (int i = 0; i < nextNode.domain.Count; i++)
                 {
                     nextNode.Fill(FindNextValueByOrder(nextNode, i));
-                    CheckConstraintsForAllAffected(nextNode);
-                    if (Solve()) return true;
+                    adjustDomainsForAllAffected(nextNode);
+                    if (nodes.Find(node => node.domain.Count == 0) != null)
+                    {
+                        continue;
+                    }
+                    if (SolveForward()) return true;
                 }
                 nextNode.Clear();
-                CheckConstraintsForAllAffected(nextNode);
+                adjustDomainsForAllAffected(nextNode);
 
                 return false;
             }
@@ -51,6 +55,6 @@ namespace CSP
             return node.domain[i];
         }
 
-        abstract protected void CheckConstraintsForAllAffected(Node<T> causingNode);
+        abstract protected void adjustDomainsForAllAffected(Node<T> causingNode);
     }
 }

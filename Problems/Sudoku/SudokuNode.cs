@@ -18,7 +18,7 @@ namespace CSP
             this.row = row;
             this.column = column;
             this.value = value;
-            domain = value == 0 ? Enumerable.Range(1, 9).ToList() : new List<int>(value);
+            domain = value == 0 ? Enumerable.Range(1, 9).ToList() : new List<int>{ value };
         }
 
         public override void Fill(int value)

@@ -23,13 +23,13 @@ namespace CSP
             extractNodes();
         }
 
-        protected override void CheckConstraintsForAllAffected(Node<string> causingNode)
+        protected override void adjustDomainsForAllAffected(Node<string> causingNode)
         {
             JolkaNode node = (JolkaNode)causingNode;
             node.constraints.ForEach(
                con => con.nodesAffected.ForEach(
                    n => {
-                   if (n.IsEmpty()) n.checkConstraints();
+                   if (n.IsEmpty()) n.adjustDomain();
                    })
                 );
         }
