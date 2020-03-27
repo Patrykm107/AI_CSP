@@ -1,0 +1,38 @@
+JOLKA 0
+
+boat
+art#
+need
+
+Time to find first result: 00:00:00.0139677
+Number of nodes visited to find result: 7
+Number of returns to find result: 1
+Total time: 00:00:00.0139677
+Total nodes visited: 30
+Total returns: 31
+Number of results: 1
+
+
+
+SUDOKU 0
+
+625 371 948
+473 985 216
+819 462 753
+
+231 794 685
+547 618 329
+968 523 174
+
+196 857 432
+352 146 897
+784 239 561
+
+
+Time to find first result: 00:00:00.1765273
+Number of nodes visited to find result: 48491
+Number of returns to find result: 48433
+Total time: 00:00:00.1884976
+Total nodes visited: 52586
+Total returns: 52587
+Number of results: 1

@@ -86,6 +86,8 @@ namespace CSP
             }
             else
             {
+                Console.WriteLine(this.ToString());
+
                 if (!resultFound)
                 {
                     timeToFindResult = DateTime.Now - startTime;
@@ -93,7 +95,6 @@ namespace CSP
                     noOfReturnsToFind = noOfReturnsTotal;
                 }
                 noOfResults++;
-                //Console.WriteLine(this.ToString());
             }
 
             totalMethodTime = DateTime.Now - startTime;
