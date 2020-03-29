@@ -126,8 +126,30 @@ namespace CSP
             }
         }
 
+        protected Node<T> FindNextNodeByDomainSize()
+        {
+            return nodes.Find(n => n.domain.Count == nodes.Where(no => no.IsEmpty()).ToList().Min(node => node.domain.Count));
+        }
+
         protected T FindNextValueByOrder(Node<T> node, int i)
         {
+            return node.domain[i];
+        }
+
+        protected T FindNextValueByRandom(Node<T> node, int i)
+        {
+            if (!node.randomised)
+            {
+                Random random = new Random();
+                node.domain.OrderBy(n => random.Next());
+                node.randomised = true;
+            }
+
+            if(i == node.domain.Count - 1)
+            {
+                node.randomised = false;
+            }
+
             return node.domain[i];
         }
 

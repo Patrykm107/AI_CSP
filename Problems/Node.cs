@@ -9,6 +9,7 @@ namespace CSP
     abstract class Node<T>
     {
         public List<T> domain;
+        public bool randomised = false;
 
         abstract public void Fill(T value);
         abstract public bool IsEmpty();
