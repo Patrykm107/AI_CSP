@@ -28,14 +28,14 @@ namespace CSP
                 startTime = DateTime.Now;
                 firstLoop = false;
             }
-            Node<T> nextNode = FindNextNodeByOrder();
+            Node<T> nextNode = FindNextNodeByDomainSize();
 
             if (nextNode != null)
             {
                 visitedNodesTotal++;
                 for (int i = 0; i < nextNode.domain.Count; i++)
                 {
-                    nextNode.Fill(FindNextValueByOrder(nextNode, i));
+                    nextNode.Fill(FindNextValueByRandom(nextNode, i));
                     adjustDomainsForAllAffected(nextNode);
                     if (nodes.Find(node => node.domain.Count == 0) != null)
                     {
@@ -55,7 +55,7 @@ namespace CSP
                     noOfReturnsToFind = noOfReturnsTotal;
                 }
                 noOfResults++;
-                //Console.WriteLine(this.ToString());
+                Console.WriteLine(this.ToString());
             }
 
             totalMethodTime = DateTime.Now - startTime;
@@ -95,6 +95,7 @@ namespace CSP
                     noOfReturnsToFind = noOfReturnsTotal;
                 }
                 noOfResults++;
+                Console.WriteLine(this.ToString());
             }
 
             totalMethodTime = DateTime.Now - startTime;
@@ -128,7 +129,8 @@ namespace CSP
 
         protected Node<T> FindNextNodeByDomainSize()
         {
-            return nodes.Find(n => n.domain.Count == nodes.Where(no => no.IsEmpty()).ToList().Min(node => node.domain.Count));
+            List<Node<T>> emptyValidNodes = nodes.Where(no => no.IsEmpty()).ToList();
+            return emptyValidNodes.Find(n => n.domain.Count == emptyValidNodes.Min(node => node.domain.Count));
         }
 
         protected T FindNextValueByOrder(Node<T> node, int i)

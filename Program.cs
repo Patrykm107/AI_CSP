@@ -11,15 +11,15 @@ namespace CSP
         static void Main(string[] args)
         {
 
-            Jolka jolka = DataLoader.LoadJolka(0);
-            jolka.SolveBacktracking();
+            Jolka jolka = DataLoader.LoadJolka(1);
+            jolka.SolveForward();
             jolka.printResearch();
 
             //Console.WriteLine(sudokus[40]);
 
             List<Sudoku> sudokus = DataLoader.LoadSudokus();
-            sudokus[0].SolveBacktracking();
-            sudokus[0].printResearch();
+            sudokus[3].SolveForward();
+            sudokus[3].printResearch();
 
             /*            
                         foreach (Sudoku sudoku in sudokus)
