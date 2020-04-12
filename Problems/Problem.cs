@@ -28,7 +28,7 @@ namespace CSP
                 startTime = DateTime.Now;
                 firstLoop = false;
             }
-            Node<T> nextNode = FindNextNodeByDomainSize();
+            Node<T> nextNode = FindNextNodeByOrder();
 
             if (nextNode != null)
             {
@@ -55,7 +55,7 @@ namespace CSP
                     noOfReturnsToFind = noOfReturnsTotal;
                 }
                 noOfResults++;
-                Console.WriteLine(this.ToString());
+                //Console.WriteLine(this.ToString());
             }
 
             totalMethodTime = DateTime.Now - startTime;
@@ -69,14 +69,14 @@ namespace CSP
                 startTime = DateTime.Now;
                 firstLoop = false;
             }
-            Node<T> nextNode = FindNextNodeByOrder();
+            Node<T> nextNode = FindNextNodeByDomainSize();
 
             if (nextNode != null)
             {
                 visitedNodesTotal++;
                 for (int i = 0; i < nextNode.domain.Count; i++)
                 {
-                    nextNode.Fill(FindNextValueByOrder(nextNode, i));
+                    nextNode.Fill(FindNextValueByRandom(nextNode, i));
                     if (constraintsFullfilled(nextNode))
                     {
                         SolveBacktracking();
@@ -86,7 +86,7 @@ namespace CSP
             }
             else
             {
-                Console.WriteLine(this.ToString());
+                //Console.WriteLine(this.ToString());
 
                 if (!resultFound)
                 {
@@ -95,7 +95,6 @@ namespace CSP
                     noOfReturnsToFind = noOfReturnsTotal;
                 }
                 noOfResults++;
-                Console.WriteLine(this.ToString());
             }
 
             totalMethodTime = DateTime.Now - startTime;
@@ -103,15 +102,7 @@ namespace CSP
         }
 
         protected Node<T> FindNextNodeByOrder() {
-            foreach(Node<T> node in nodes)
-            {
-                if (node.IsEmpty())
-                {
-                    return node;
-                }
-            }
-
-            return null;
+            return nodes.Find(n => n.IsEmpty());
         }
 
         protected Node<T> FindNextNodeByRandom()
@@ -143,7 +134,7 @@ namespace CSP
             if (!node.randomised)
             {
                 Random random = new Random();
-                node.domain.OrderBy(n => random.Next());
+                node.domain = node.domain.OrderBy(n => random.Next()).ToList();
                 node.randomised = true;
             }
 
@@ -158,13 +149,21 @@ namespace CSP
         public void printResearch()
         {
             Console.Write(
-                $"Time to find first result: {timeToFindResult}\n" +
+                $"{timeToFindResult}\n" +
+                $"{visitedNodesToFind}\n" +
+                $"{noOfReturnsToFind}\n" +
+                $"{totalMethodTime}\n" +
+                $"{visitedNodesTotal}\n" +
+                $"{noOfReturnsTotal}\n" +    //Includes returns from finished problem
+                $"{noOfResults}\n");
+
+            /*  $"Time to find first result: {timeToFindResult}\n" +
                 $"Number of nodes visited to find result: {visitedNodesToFind}\n" +
                 $"Number of returns to find result: {noOfReturnsToFind}\n" +
                 $"Total time: {totalMethodTime}\n" +
                 $"Total nodes visited: {visitedNodesTotal}\n" +
                 $"Total returns: {noOfReturnsTotal}\n" +    //Includes returns from finished problem
-                $"Number of results: {noOfResults}\n\n");
+                $"Number of results: {noOfResults}\n\n");*/
         }
 
 
